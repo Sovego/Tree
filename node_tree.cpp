@@ -1,5 +1,8 @@
 #include<iostream>
-
+#include <Windows.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <iomanip>
 struct node_tree {
 	int value;
 	node_tree* left;
@@ -83,6 +86,36 @@ void search(node_tree* root_tree,int a) {
 	std::cout << "There is no such element in the tree\n";
 }
 
+void go_to_xy (short x, short y)
+{
+    HANDLE StdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD coord = {x, y};
+    SetConsoleCursorPosition(StdOut, coord);
+}
+
+void print (node_tree * root_tree, short x, short y, short a, char c)
+{
+    if (root_tree)
+    {
+        if (a>0 && c!='k')
+        {
+            if (c=='l')
+                x-=10;
+            else
+                x+=10;
+        }
+        else if (c!='k')
+            if (c=='l')
+                x-=4;
+            else
+                x+=4;
+        go_to_xy (x,y+=2);
+        a--;
+        printf ("%5d", root_tree->value);
+        print (root_tree->left,x,y,a,'l');
+        print (root_tree->right,x,y,a,'r');
+    }
+}
 
 void output(node_tree* current) {
 	if (current != nullptr) {
@@ -102,6 +135,7 @@ void del_all(node_tree* Tree1) {
 }
 
 int main() {
+	system("cls");
 	
 	node_tree* root_tree=new node_tree;
 	root_tree = nullptr;
@@ -109,6 +143,7 @@ int main() {
 	int b;
 	while (a!=6)
 	{
+		system("cls");
 		std::cout << "1 Add element\n";
 		std::cout << "2 Del element\n";
 		std::cout << "3 Search\n";
@@ -151,7 +186,8 @@ int main() {
 				std::cout << "Tree not create";
 			} else
 			{
-				output(root_tree);
+				print (root_tree,37,5,2,'k');
+				//output(root_tree);
 				std::cout << std::endl;
 			}
 			break;
@@ -173,7 +209,8 @@ int main() {
 		default: std::cout << "ERROR";
 				break;
 		}
-		
+		std::cout << std::endl << "Press any key";
+		_getch();
 	}
-
+	
 }
